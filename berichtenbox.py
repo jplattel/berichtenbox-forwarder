@@ -34,6 +34,17 @@ br.form['authentication[digid_username]'] = args.username
 br.form['authentication[wachtwoord]'] = args.password
 br.submit()
 
+# Check if new providers have been added. Nobody cares, so just accept 'em
+for form in br.forms():
+    if 'class' in form.attrs and str(form.attrs["class"] == "newproviders"):
+	
+        logging.info('New providers found. Automatically accepting...')
+
+        br.form = form
+        br.find_control('acceptatie_afnemers[accept_afnemers]').items[0].selected = True
+        br.submit()
+        break
+	
 # Get to berichtenbox
 logging.info('Navigating to Berichtenbox')
 
