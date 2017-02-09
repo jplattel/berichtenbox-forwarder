@@ -2,11 +2,13 @@ import argparse
 import mechanize
 import logging
 import shelve
+import keyring
+import sys
 
 # Argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('-u','--username', help='Digid Gebruikersnaam', required=True)
-parser.add_argument('-p','--password', help='Digid Wachtwoord', required=True)
+parser.add_argument('-p','--password', help='Digid Wachtwoord', required=False)
 args = parser.parse_args()
 
 # History, for caching which messages are forwarded
@@ -14,6 +16,14 @@ history = shelve.open('history')
 
 # Configure logging
 logging.basicConfig(format='%(asctime)s [%(levelname)s] : %(message)s', level=logging.INFO)
+
+#check keyring for password when not set
+if not args.password:
+    temp_password = keyring.get_password("digid", args.username)
+    if not temp_password:
+        sys.exit("No password given. Add via 'keyring set digid " + args.username + "'")
+    else:
+        args.password = temp_password
 
 # Set up mechanize (ignore robots so it is possible to run this script)
 br = mechanize.Browser(factory=mechanize.RobustFactory())
@@ -72,4 +82,3 @@ for l in br.links(url_regex='/berichtenbox/bericht/'):
 		
 logging.info('Done!')
 history.close()
-
