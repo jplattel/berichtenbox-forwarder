@@ -8,7 +8,14 @@ If you decide to put it in a cronjob, I've also added the functionality to cache
 
 ## Requirements
 
-The only requirement this little script needs is Mechanize. Which you can easily install with: `pip install mechanize`.
+The only requirements this little script needs is Mechanize and the keyring library. Which you can easily install with: 
+
+```
+pip install mechanize
+pip install keyring
+```
+
+Or just use the requirements.txt file: `pip install -r requirements.txt`
 
 ## License
 

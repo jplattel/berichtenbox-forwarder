@@ -1,0 +1,2 @@
+keyring==10.2
+mechanize==0.2.5
